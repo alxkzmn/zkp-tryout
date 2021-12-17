@@ -1,7 +1,7 @@
 import random
 
 
-def get_witness(problem, assignment):
+def get_witness(problem, assignment, side_obfuscator=0, shift=-1):
     """
     Given an instance of a partition problem via a list of numbers (the problem) and a list of
     (-1, 1), we say that the assignment satisfies the problem if their dot product is 0.
@@ -10,7 +10,9 @@ def get_witness(problem, assignment):
     """
     sum = 0
     mx = 0
-    side_obfuscator = 1 - 2 * random.randint(0, 1)
+    if(side_obfuscator == 0):
+        side_obfuscator = 1 - 2 * random.randint(0, 1)
+
     witness = [sum]
     assert len(problem) == len(assignment)
     for num, side in zip(problem, assignment):
@@ -20,6 +22,7 @@ def get_witness(problem, assignment):
         mx = max(mx, num)
     # make sure that it is a satisfying assignment
     assert sum == 0
-    shift = random.randint(0, mx)
+    if(shift == -1):
+        shift = random.randint(0, mx)
     witness = [x + shift for x in witness]
     return witness
